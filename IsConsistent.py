@@ -34,7 +34,7 @@ def main(matrix_a, vector_b):
                 tmp = final_matrix
                 final_matrix = is_consistent(final_matrix)
                 if final_matrix:
-                    return for_arsen(tmp),"System is consistent"
+                    return for_arsen(tmp), "System is consistent"
                 else:
                     return "System is inconsistent"
         else:
@@ -53,7 +53,8 @@ def to_return(matrix):
 
 
 def to_reduced_row_echelon_form(matrix):
-    if not matrix: return
+    if not matrix: 
+        return
     lead = 0
     row_сount = number_of_rows(matrix)
     column_сount = number_of_colums(matrix)
@@ -107,4 +108,4 @@ def for_arsen(matrix):
     for i in matrix:
         only_matrix.append(i[:len(i)-1])
         augmented_part.append(i[-1])
-    return only_matrix,augmented_part
+    return only_matrix, augmented_part
