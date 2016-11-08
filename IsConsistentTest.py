@@ -96,6 +96,21 @@ class Test(unittest.TestCase):
         expected = "System is consistent"
         actual = main([[1,0,0],[1,2,0],[1,2,3]],[1,1,1])
         self.assertEqual(expected, actual, "Error")
+        
+    def test_8_main(self):
+        expected = (([[1, 0, 0,0,0,0], [0, 1, 0,0,0,0], [0, 0, 1,0,0,0],[0, 0,0,1,0,0],[0,0,0,0,1,0],[0,0,0,0,0,1]],[0.4,1.8,0.4,1,-1,-0.8]), 'System is consistent')
+        actual = main([[1,2,0,0,3,0],[3,0,2,0,0,0],[1,1,0,1,0,4],[3,0,2,0,2,0],[0,1,2,0,1,2],[0,0,0,2,0,0]],[1,2,0,0,0,2])
+        self.assertEqual(expected, actual, "Error")
+
+    def test_9_main(self):
+        expected = "System is inconsistent"
+        actual = main([[1,1,1],[1,2,3],[2,3,4]],[150,100,200])
+        self.assertEqual(expected, actual, "Error")
+
+    def test_10_main(self):
+        expected = "System is inconsistent"
+        actual = main([[2,0,2,0,0,1],[0,2,0,1,0,3],[2,0,0,0,3,0],[0,1,0,2,0,1],[1,0,3,0,1,0],[0,0,0,0,0,0]],[100,100,100,100,100,100])
+        self.assertEqual(expected, actual, "Error")
 
     def test_1_to_return(self):
         expected = [[1,0,0,0,0,0],[0,1,0,0,0,0],[0,0,1,0,0,0],[0,0,0,1,0,0],[0,0,0,0,1,0],[0,0,0,0,0,1]]
