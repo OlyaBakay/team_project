@@ -34,15 +34,15 @@ def main(matrix_a, vector_b):
                 tmp = final_matrix
                 final_matrix = is_consistent(final_matrix)
                 if final_matrix:
-                    return for_arsen(tmp), "System is consistent"
+                    return tmp, "System is consistent"
                 else:
                     return "System is inconsistent"
         else:
             return "System is inconsistent."
     else:
         return "Wrong size of matrix"
-    
-    
+
+
 def to_return(matrix):
     A = to_reduced_row_echelon_form(matrix)
     for i in range(len(A)):
@@ -53,7 +53,7 @@ def to_return(matrix):
 
 
 def to_reduced_row_echelon_form(matrix):
-    if not matrix: 
+    if not matrix:
         return
     lead = 0
     row_сount = number_of_rows(matrix)
@@ -100,12 +100,4 @@ def add_vector(matrix, vector):
         return matrix
     else:
         return "Wrong vector"
-    
-    
-def for_arsen(matrix):
-    only_matrix = []
-    augmented_part = []
-    for i in matrix:
-        only_matrix.append(i[:len(i)-1])
-        augmented_part.append(i[-1])
-    return only_matrix, augmented_part
+
