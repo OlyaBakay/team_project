@@ -56,5 +56,10 @@ def check(matrix):
     pass
 
 
-def add_vector(vector):
-    pass
+def add_vector(matrix, vector):
+    if number_of_rows(matrix) == number_of_rows(vector):
+        for i in range(len(vector)):
+            matrix[i].append(vect[i])
+        return matrix
+    else:
+        return "Wrong vector"
