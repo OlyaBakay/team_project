@@ -30,9 +30,9 @@ def main(matrix_a, vector_b):
                 return "System is always consistent."
             else:
                 final_matrix = add_vector(matrix_a,vector_b)
-                final_matrix = toReturn(final_matrix)
+                final_matrix = to_return(final_matrix)
                 tmp = final_matrix
-                final_matrix = IsConsistent(final_matrix)
+                final_matrix = is_consistent(final_matrix)
                 if final_matrix:
                     return tmp,"System is consistent"
                 else:
@@ -41,7 +41,7 @@ def main(matrix_a, vector_b):
             return "System is inconsistent."
     else:
         return "Wrong size of matrix"
-def toReturn(matrix):#Викликати цю функцію!!!Вона забирає "-0.0" і ставить натомість "0.0"
+def to_return(matrix):#Викликати цю функцію!!!Вона забирає "-0.0" і ставить натомість "0.0"
     A = to_reduced_row_echelon_form(matrix)
     for i in range(len(A)):
         for j in range(len(A[i])):
@@ -80,7 +80,7 @@ def to_reduced_row_echelon_form(matrix):
 def sum_of_row(row):
     a = row[:(len(row)-1)]
     return sum(a)
-def IsConsistent(matrix):# перевіряє зведену матрицю. Аби не було що 0x = 3
+def is_consistent(matrix):# перевіряє зведену матрицю. Аби не було що 0x = 3
     isConsistent = True
     for i in matrix:
         if sum_of_row(i) == 0 and i[-1] != 0:
