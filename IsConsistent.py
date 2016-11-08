@@ -14,6 +14,7 @@ def number_of_rows(matrix):
 def number_of_colums(matrix):
     return len(matrix[0])
 
+
 def check_matrix(matrix):
     a = len(matrix[0])
     for i in matrix:
@@ -23,7 +24,6 @@ def check_matrix(matrix):
 
 
 def main(matrix_a, vector_b):
-    # написати функцію для перевірки чи правильна введена матриця
     if check_matrix(matrix_a):
         if number_of_rows(matrix_a) == number_of_rows(vector_b):
             if consist_of_zero(vector_b):
@@ -41,7 +41,9 @@ def main(matrix_a, vector_b):
             return "System is inconsistent."
     else:
         return "Wrong size of matrix"
-def to_return(matrix):#Викликати цю функцію!!!Вона забирає "-0.0" і ставить натомість "0.0"
+    
+    
+def to_return(matrix):
     A = to_reduced_row_echelon_form(matrix)
     for i in range(len(A)):
         for j in range(len(A[i])):
@@ -53,23 +55,23 @@ def to_return(matrix):#Викликати цю функцію!!!Вона заб�
 def to_reduced_row_echelon_form(matrix):
     if not matrix: return
     lead = 0
-    rowCount = number_of_rows(matrix)
-    columnCount = number_of_colums(matrix)
-    for r in range(rowCount):
-        if lead >= columnCount:
+    row_сount = number_of_rows(matrix)
+    column_сount = number_of_colums(matrix)
+    for r in range(row_сount):
+        if lead >= column_сount:
             return
         i = r
         while matrix[i][lead] == 0:
             i += 1
-            if i == rowCount:
+            if i == row_сount:
                 i = r
                 lead += 1
-                if columnCount == lead:
+                if column_сount == lead:
                     return
         matrix[i], matrix[r] = matrix[r], matrix[i]
         lv = matrix[r][lead]
         matrix[r] = [mrx / float(lv) for mrx in matrix[r]]
-        for i in range(rowCount):
+        for i in range(row_сount):
             if i != r:
                 lv = matrix[i][lead]
                 matrix[i] = [iv - lv * rv for rv, iv in zip(matrix[r], matrix[i])]
@@ -80,13 +82,14 @@ def to_reduced_row_echelon_form(matrix):
 def sum_of_row(row):
     a = row[:(len(row)-1)]
     return sum(a)
-def is_consistent(matrix):# перевіряє зведену матрицю. Аби не було що 0x = 3
-    isConsistent = True
+
+
+def is_consistent(matrix):
+    is_сonsistent = True
     for i in matrix:
         if sum_of_row(i) == 0 and i[-1] != 0:
-            isConsistent = False
-    return isConsistent
-
+            is_сonsistent = False
+    return is_сonsistent
 
 
 def add_vector(matrix, vector):
@@ -96,10 +99,12 @@ def add_vector(matrix, vector):
         return matrix
     else:
         return "Wrong vector"
+    
+    
 def for_arsen(matrix):
-    Only_matrix = []
+    only_matrix = []
     augmented_part = []
     for i in matrix:
-        Only_matrix.append(i[:len(i)-1])
+        only_matrix.append(i[:len(i)-1])
         augmented_part.append(i[-1])
-    return Only_matrix,augmented_part
+    return only_matrix,augmented_part
