@@ -70,9 +70,17 @@ def to_reduced_row_echelon_form(matrix):
     return matrix
 
 
-def check_system(matrix):
-    # перевіряє зведену матрицю. Аби не було що 0x = 3
-    pass
+def sum_of_row(row):
+    a = row[:(len(row)-1)]
+    return sum(a)
+def IsConsistent(matrix):# перевіряє зведену матрицю. Аби не було що 0x = 3
+    isConsistent = True
+    for i in matrix:
+        print (i)
+        if sum_of_row(i) == 0 and i[-1] != 0:
+            isConsistent = False
+    return isConsistent
+
 
 
 def add_vector(matrix, vector):
