@@ -29,7 +29,7 @@ def main(matrix_a, vector_b):
             if consist_of_zero(vector_b):
                 return "System is always consistent."
             else:
-                final_matrix = add_vector(matrix_a,vector_b)
+                final_matrix = add_vector(matrix_a, vector_b)
                 final_matrix = to_return(final_matrix)
                 tmp = final_matrix
                 final_matrix = is_consistent(final_matrix)
