@@ -1,226 +1,103 @@
-import unittest
-from IsConsistent import *
+def consist_of_zero(vector):
+    of_zero = True
+    for i in vector:
+        if i != 0:
+            of_zero = False
+            break
+    return of_zero
 
-class Test(unittest.TestCase):
-    def test_1_consist_of_zero(self):
-        expected = True
-        actual = consist_of_zero([0,0,0])
-        self.assertEqual(expected, actual, "Error")
 
-    def test_2_consist_of_zero(self):
-        expected = False
-        actual = consist_of_zero([0,1,0,0,0])
-        self.assertEqual(expected, actual, "Error")
+def number_of_rows(matrix):
+    return len(matrix)
 
-    def test_3_consist_of_zero(self):
-        expected = True
-        actual = consist_of_zero([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
-        self.assertEqual(expected, actual, "Error")
 
-    def test_4_consist_of_zero(self):
-        expected = False
-        actual = consist_of_zero([0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
-        self.assertEqual(expected, actual, "Error")
+def number_of_colums(matrix):
+    return len(matrix[0])
 
-    def test_1_number_of_rows(self):
-        expected = 3
-        actual = number_of_rows([[3,2,1],[0,0,0],[4,6,5]])
-        self.assertEqual(expected, actual, "Error")
 
-    def test_2_number_of_rows(self):
-        expected = 9
-        actual = number_of_rows([[3,2,4,4,3,1],[0,5,4,4,0,0],[4,4,4,4,6,5],[3,2,4,4,4,1],[0,0,5,5,5,0],[4,4,4,4,6,5],[3,4,4,4,2,1],[0,0,5,5,5,0],[4,6,6,6,6,5]])
-        self.assertEqual(expected, actual, "Error")
+def check_matrix(matrix):
+    a = len(matrix[0])
+    for i in matrix:
+        if len(i) != a:
+            return False
+    return True
 
-    def test_1_number_of_columns(self):
-        expected = 4
-        actual = number_of_colums([[3,2,5,1],[5,0,0,0],[5,4,6,5]])
-        self.assertEqual(expected, actual, "Error")
 
-    def test_2_number_of_columns(self):
-        expected = 9
-        actual = number_of_colums([[3,2,4,4,5,5,5,4,1],[0,0,5,5,5,5,5,5,0],[4,5,5,5,4,4,4,6,5],[3,4,5,5,5,4,4,2,1],[0,0,5,5,5,5,5,5,0],[4,6,5,5,5,6,6,6,5]])
-        self.assertEqual(expected, actual, "Error")
+def main(matrix_a, vector_b):
+    if check_matrix(matrix_a):
+        if number_of_rows(matrix_a) == number_of_rows(vector_b):
+            if consist_of_zero(vector_b):
+                return "System is always consistent."
+            else:
+                final_matrix = add_vector(matrix_a, vector_b)
+                final_matrix = to_return(final_matrix)
+                tmp = final_matrix
+                final_matrix = is_consistent(final_matrix)
+                if final_matrix:
+                    return tmp, "System is consistent"
+                else:
+                    return "System is inconsistent"
+        else:
+            return "System is inconsistent."
+    else:
+        return "Wrong size of matrix"
 
-    def test_1_check_matrix(self):
-        expected = False
-        actual = check_matrix([[3,2,4,4,5,5,5,4],[0,0,5,5,5,5,5,5,0],[4,5,5,5,4,4,4,6,5],[3,4,5,5,5,4,4,2,1],[0,0,5,5,5,5,5,5,0],[4,6,5,5,5,6,6,6,5]])
-        self.assertEqual(expected, actual, "Error")
 
-    def test_2_check_matrix(self):
-        expected = True
-        actual = check_matrix([[3,2,4,4,5,5,5,4,1],[0,0,5,5,5,5,5,5,0],[4,5,5,5,4,4,4,6,5],[3,4,5,5,5,4,4,2,1],[0,0,5,5,5,5,5,5,0],[4,6,5,5,5,6,6,6,5]])
-        self.assertEqual(expected, actual, "Error")
+def to_return(matrix):
+    A = to_reduced_row_echelon_form(matrix)
+    for i in range(len(A)):
+        for j in range(len(A[i])):
+            if A[i][j] == -0.0:
+                A[i][j] = 0.0
+    return A
 
-    def test_3_check_matrix(self):
-        expected = False
-        actual = check_matrix([[3,2,4],[5,4],[6,5,4]])
-        self.assertEqual(expected, actual, "Error")
 
-    def test_4_check_matrix(self):
-        expected = True
-        actual = check_matrix([[4,3,5],[8,7,6],[9,8,7]])
-        self.assertEqual(expected, actual, "Error")
+def to_reduced_row_echelon_form(matrix):
+    counter = 0
+    if not matrix:
+        return
+    lead = 0
+    row_сount = number_of_rows(matrix)
+    column_сount = number_of_colums(matrix)
+    for r in range(row_сount):
+        if lead >= column_сount:
+            return
+        i = r
+        while matrix[i][lead] == 0:
+            i += 1
+            if i == row_сount:
+                i = r
+                lead += 1
+                if column_сount == lead:
+                    return
+        matrix[i], matrix[r] = matrix[r], matrix[i]
+        lv = matrix[r][lead]
+        matrix[r] = [mrx / float(lv) for mrx in matrix[r]]
+        for i in range(row_сount):
+            if i != r:
+                lv = matrix[i][lead]
+                matrix[i] = [iv - lv * rv for rv, iv in zip(matrix[r], matrix[i])]
+        lead += 1
+    return matrix
 
-    def test_1_main(self):
-        expected = "Wrong size of matrix"
-        actual = main([[3,2,4,4,5,5,5,4],[0,0,5,5,5,5,5,5,0],[4,5,5,5,4,4,4,6,5],[3,4,5,5,5,4,4,2,1],[0,0,5,5,5,5,5,5,0],[4,6,5,5,5,6,6,6,5]],[2,4,6,3])
-        self.assertEqual(expected, actual, "Error")
 
-    def test_2_main(self):
-        expected = "Wrong size of matrix"
-        actual = main([[3,2,4],[0,0,5],[4,5,5],[3,4,2,1]],[2,4,6,3])
-        self.assertEqual(expected, actual, "Error")
+def sum_of_row(row):
+    a = row[:(len(row)-1)]
+    return sum(a)
 
-    def test_3_main(self):
-        expected = "System is inconsistent."
-        actual = main([[3,2,4,4,5,5,5,4,1],[0,0,5,5,5,5,5,5,0],[4,5,5,5,4,4,4,6,5],[3,4,5,5,5,4,4,2,1],[0,0,5,5,5,5,5,5,0],[4,6,5,5,5,6,6,6,5]],[2,4,6,3])
-        self.assertEqual(expected, actual, "Error")
 
-    def test_4_main(self):
-        expected = "System is inconsistent."
-        actual = main([[3,2,4],[0,0,5],[4,5,5],[3,4,2]],[2,4,6])
-        self.assertEqual(expected, actual, "Error")
+def is_consistent(matrix):
+    is_сonsistent = True
+    for i in matrix:
+        if sum_of_row(i) == 0 and i[-1] != 0:
+            is_сonsistent = False
+    return is_сonsistent
 
-    def test_5_main(self):
-        expected = "System is always consistent."
-        actual = main([[1,2,3],[2,4,5],[3,2,1]],[0,0,0])
-        self.assertEqual(expected, actual, "Error")
 
-    def test_6_main(self):
-        expected = "System is always consistent."
-        actual = main([[1,2,3],[5,5,5],[7,6,5],[6,5,4],[6,5,4],[2,4,5],[3,2,1]],[0,0,0,0,0,0,0])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_7_main(self):
-        expected = ([[1,0,0,1],[0,1,0,0],[0,0,1,0]],"System is consistent")
-        actual = main([[1,0,0],[1,2,0],[1,2,3]],[1,1,1])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_8_main(self):
-        expected = ([[1, 0, 0,0,0,0,0.4], [0, 1, 0,0,0,0,1.8], [0, 0, 1,0,0,0,0.4],[0, 0,0,1,0,0,1],[0,0,0,0,1,0,-1],[0,0,0,0,0,1,-0.8]], 'System is consistent')
-        actual = main([[1,2,0,0,3,0],[3,0,2,0,0,0],[1,1,0,1,0,4],[3,0,2,0,2,0],[0,1,2,0,1,2],[0,0,0,2,0,0]],[1,2,0,0,0,2])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_9_main(self):
-        expected = "System is inconsistent"
-        actual = main([[1,1,1],[1,2,3],[2,3,4]],[150,100,200])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_10_main(self):
-        expected = "System is inconsistent"
-        actual = main([[2,0,2,0,0,1],[0,2,0,1,0,3],[2,0,0,0,3,0],[0,1,0,2,0,1],[1,0,3,0,1,0],[0,0,0,0,0,0]],[100,100,100,100,100,100])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_1_to_return(self):
-        expected = [[1,0,0,0,0,0],[0,1,0,0,0,0],[0,0,1,0,0,0],[0,0,0,1,0,0],[0,0,0,0,1,0],[0,0,0,0,0,1]]
-        actual = to_reduced_row_echelon_form([[1,0,-0,0,0,0],[0,1,-0,0,0,0],[-0,-0,1,-0,-0,-0],[0,0,0,1,0,0],[0,0,0,0,1,0],[0,0,-0,0,0,1]])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_2_to_return(self):
-        expected = [[1,0,0,0,0,0],[0,1,0,0,0,0],[0,0,1,0,0,0],[0,0,0,1,0,0],[0,0,0,0,1,0],[0,0,0,0,0,1]]
-        actual = to_reduced_row_echelon_form([[1,-0,-0,-0,-0,-0],[-0,1,-0,-0,-0,-0],[-0,-0,1,-0,-0,-0],[-0,-0,-0,1,-0,-0],[-0,-0,-0,-0,1,-0],[-0,-0,-0,-0,-0,1]])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_3_to_return(self):
-        expected = [[1,0,0],[0,1,0],[0,0,1]]
-        actual = to_reduced_row_echelon_form([[1,-0,-0],[-0,1,-0],[-0,-0,1]])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_1_to_reduced_row_echelon_form(self):
-        expected = None
-        actual = to_reduced_row_echelon_form(None)
-        self.assertEqual(expected, actual, "Error")
-
-    def test_2_to_reduced_row_echelon_form(self):
-        expected = None
-        actual = to_reduced_row_echelon_form([[0,0,0],[0,1,0],[0,0,1]])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_3_to_reduced_row_echelon_form(self):
-        expected = None
-        actual = to_reduced_row_echelon_form([[0,0,0],[0,0,0],[0,0,0]])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_4_to_reduced_row_echelon_form(self):
-        expected = [[1,0,0],[0,1,0],[0,0,1]]
-        actual = to_reduced_row_echelon_form([[5,1,0],[2,1,0],[3,0,1]])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_5_to_reduced_row_echelon_form(self):
-        expected = [[1,0,0,0,0,0],[0,1,0,0,0,0],[0,0,1,0,0,0],[0,0,0,1,0,0],[0,0,0,0,1,0],[0,0,0,0,0,1]]
-        actual = to_reduced_row_echelon_form([[1,0,0,0,0,0],[1,2,0,0,0,0],[1,2,3,0,0,0],[1,2,3,4,0,0],[1,2,3,4,5,0],[1,2,3,4,5,6]])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_1_sum_of_row(self):
-        expected = 13
-        actual = sum_of_row([7,6,5])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_2_sum_of_row(self):
-        expected = 51
-        actual = sum_of_row([7,4,6,9,7,5,4,4,5,6])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_1_is_consistent(self):
-        expected = False
-        actual = is_consistent([[0,4,6],[1,4,0],[0,0,2]])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_2_is_consistent(self):
-        expected = True
-        actual = is_consistent([[0,4,6],[1,4,0],[0,0,0]])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_3_is_consistent(self):
-        expected = True
-        actual = is_consistent([[0,4,6],[1,4,0],[5,1,2]])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_4_is_consistent(self):
-        expected = False
-        actual = is_consistent([[0,4,6],[1,4,0],[-7,7,5]])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_5_is_consistent(self):
-        expected = False
-        actual = is_consistent([[0,4,6,6,5,7,4,5,6],[1,4,0,7,6,5,8,7,6],[0,0,0,0,0,0,0,0,2]])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_6_is_consistent(self):
-        expected = True
-        actual = is_consistent([[0,4,6,7,6,5,8,7,9],[1,2,3,5,4,3,1,4,0],[0,0,0,0,0,0,0,0,0]])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_7_is_consistent(self):
-        expected = True
-        actual = is_consistent([[0,4,6,7,6,5,8,7,9],[1,2,3,5,4,3,1,4,0],[0,7,6,8,7,6,8,6,7]])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_8_is_consistent(self):
-        expected = False
-        actual = is_consistent([[0,4,6,7,6,5,8,7,9],[1,2,3,5,4,3,1,4,0],[6,7,6,8,-7,-6,-8,-6,7]])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_1_add_vector(self):
-        expected = ([[1,5,3,5,7,3,6,5,6,7,4],[5,3,8,6,1,4,7,6,5,4,5],[7,4,6,9,7,5,4,4,5,6,7]])
-        actual = add_vector([[1,5,3,5,7,3,6,5,6,7],[5,3,8,6,1,4,7,6,5,4],[7,4,6,9,7,5,4,4,5,6]],[4,5,7])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_2_add_vector(self):
-        expected = ([[2,4,3,7],[4,6,5,6],[6,5,4,5]])
-        actual = add_vector([[2,4,3],[4,6,5],[6,5,4]],[7,6,5])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_3_add_vector(self):
-        expected = "Wrong vector"
-        actual = add_vector([[2,4,3],[4,6,5],[6,5,4]],[7,6,5,7])
-        self.assertEqual(expected, actual, "Error")
-
-    def test_4_add_vector(self):
-        expected = "Wrong vector"
-        actual = add_vector([[2,4,3,7,6,5,8,6,5,7],[4,6,5,8,7,6,5,5,4,6],[6,5,4,6,5,4,3,4,5,6]],[7,6,5,7])
-        self.assertEqual(expected, actual, "Error")
-
-if __name__ == "__main__":
-    unittest.main()
+def add_vector(matrix, vector):
+    if number_of_rows(matrix) == number_of_rows(vector):
+        for i in range(len(vector)):
+            matrix[i].append(vector[i])
+        return matrix
+    else:
+        return "Wrong vector"
