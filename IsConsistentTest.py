@@ -93,7 +93,7 @@ class Test(unittest.TestCase):
         self.assertEqual(expected, actual, "Error")
 
     def test_7_main(self):
-        expected = "System is consistent"
+        expected = (([[1,0,0],[0,1,0],[0,0,1]],[1,0,0]),("System is consistent"))
         actual = main([[1,0,0],[1,2,0],[1,2,3]],[1,1,1])
         self.assertEqual(expected, actual, "Error")
         
