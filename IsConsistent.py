@@ -34,7 +34,7 @@ def main(matrix_a, vector_b):
                 tmp = final_matrix
                 final_matrix = is_consistent(final_matrix)
                 if final_matrix:
-                    return tmp,"System is consistent"
+                    return for_arsen(tmp),"System is consistent"
                 else:
                     return "System is inconsistent"
         else:
@@ -96,3 +96,10 @@ def add_vector(matrix, vector):
         return matrix
     else:
         return "Wrong vector"
+def for_arsen(matrix):
+    Only_matrix = []
+    augmented_part = []
+    for i in matrix:
+        Only_matrix.append(i[:len(i)-1])
+        augmented_part.append(i[-1])
+    return Only_matrix,augmented_part
