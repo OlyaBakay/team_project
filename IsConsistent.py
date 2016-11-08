@@ -25,15 +25,18 @@ def check_matrix(matrix):
 
 def main(matrix_a, vector_b):
     # написати функцію для перевірки чи правильна введена матриця
-    if number_of_rows(matrix_a) == number_of_rows(vector_b):
-        if consist_of_zero(vector_b):
-            return "System is always consistent."
+    if check_matrix(matrix_a):
+        if number_of_rows(matrix_a) == number_of_rows(vector_b):
+            if consist_of_zero(vector_b):
+                return "System is always consistent."
+            else:
+                final_matrix = matrix_a.add_vector(vector_b)
+                final_matrix = to_reduced_row_echelon_form(final_matrix)
+                final_matrix = check_system(final_matrix)
         else:
-            final_matrix = matrix_a.add_vector(vector_b)
-            final_matrix = to_reduced_row_echelon_form(final_matrix)
-            final_matrix = check_system(final_matrix)
+            return "System is inconsistent."
     else:
-        return "System is inconsistent."
+        return "Wrong size of matrix"
 def toReturn(matrix):#Викликати цю функцію!!!Вона забирає "-0.0" і ставить натомість "0.0"
     A = to_reduced_row_echelon_form(matrix)
     for i in range(len(A)):
