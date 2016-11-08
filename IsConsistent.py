@@ -14,6 +14,14 @@ def number_of_rows(matrix):
 def number_of_colums(matrix):
     return len(matrix[0])
 
+def check_matrix(matrix):
+    a = len(matrix[0])
+    for i in matrix:
+        print(i)
+        if len(i) != a:
+            return False
+    return True
+
 
 def main(matrix_a, vector_b):
     # написати функцію для перевірки чи правильна введена матриця
