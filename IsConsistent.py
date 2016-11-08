@@ -9,6 +9,8 @@ def consist_of_zero(vector):
 
 def number_of_rows(matrix):
     return len(matrix)
+def number_of_colums(matrix):
+    return len(matrix[0])
 
 
 def main(matrix_a, vector_b):
@@ -24,7 +26,30 @@ def main(matrix_a, vector_b):
 
 
 def to_reduced_row_echelon_form(matrix):
-    pass
+    if not matrix: return
+    lead = 0
+    rowCount = number_of_rows(matrix)
+    columnCount = number_of_colums(matrix)
+    for r in range(rowCount):
+        if lead >= columnCount:
+            return
+        i = r
+        while matrix[i][lead] == 0:
+            i += 1
+            if i == rowCount:
+                i = r
+                lead += 1
+                if columnCount == lead:
+                    return
+        matrix[i], matrix[r] = matrix[r], matrix[i]
+        lv = matrix[r][lead]
+        matrix[r] = [mrx / float(lv) for mrx in matrix[r]]
+        for i in range(rowCount):
+            if i != r:
+                lv = matrix[i][lead]
+                matrix[i] = [iv - lv * rv for rv, iv in zip(matrix[r], matrix[i])]
+        lead += 1
+    return matrix
 
 
 def check(matrix):
