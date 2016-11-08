@@ -26,6 +26,13 @@ def main(matrix_a, vector_b):
             final_matrix = check_system(final_matrix)
     else:
         return "System is inconsistent."
+def toReturn(matrix):#Викликати цю функцію!!!Вона забирає "-0.0" і ставить натомість "0.0"
+    A = to_reduced_row_echelon_form(matrix)
+    for i in range(len(A)):
+        for j in range(len(A[i])):
+            if A[i][j] == -0.0:
+                A[i][j] = 0.0
+    return A
 
 
 def to_reduced_row_echelon_form(matrix):
