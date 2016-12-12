@@ -11,25 +11,93 @@ def number_of_rows(matrix):
     return len(matrix)
 
 
+def number_of_colums(matrix):
+    return len(matrix[0])
+
+
+def check_matrix(matrix):
+    a = len(matrix[0])
+    for i in matrix:
+        if len(i) != a:
+            return False
+    return True
+
+
 def main(matrix_a, vector_b):
-    if number_of_rows(matrix_a) == number_of_rows(vector_b):
-        if consist_of_zero(vector_b):
-            return "System is always consistent."
+    if check_matrix(matrix_a):
+        if number_of_rows(matrix_a) == number_of_rows(vector_b):
+            if consist_of_zero(vector_b):
+                return "System is always consistent."
+            else:
+                final_matrix = add_vector(matrix_a, vector_b)
+                final_matrix = to_return(final_matrix)
+                tmp = final_matrix
+                final_matrix = is_consistent(final_matrix)
+                if final_matrix:
+                    return tmp, "System is consistent"
+                else:
+                    return "System is inconsistent"
         else:
-            final_matrix = matrix_a.add_vector(vector_b)
-            final_matrix = to_reduced_row_echelon_form(final_matrix)
-            final_matrix = check(final_matrix)
+            return "System is inconsistent."
     else:
-        return "System is inconsistent."
+        return "Wrong size of matrix"
+
+
+def to_return(matrix):
+    A = to_reduced_row_echelon_form(matrix)
+    for i in range(len(A)):
+        for j in range(len(A[i])):
+            if A[i][j] == -0.0:
+                A[i][j] = 0.0
+    return A
 
 
 def to_reduced_row_echelon_form(matrix):
-    pass
+    counter = 0
+    if not matrix:
+        return
+    lead = 0
+    row_сount = number_of_rows(matrix)
+    column_сount = number_of_colums(matrix)
+    for r in range(row_сount):
+        if lead >= column_сount:
+            return
+        i = r
+        while matrix[i][lead] == 0:
+            i += 1
+            if i == row_сount:
+                i = r
+                lead += 1
+                if column_сount == lead:
+                    return
+        matrix[i], matrix[r] = matrix[r], matrix[i]
+        lv = matrix[r][lead]
+        matrix[r] = [mrx / float(lv) for mrx in matrix[r]]
+        for i in range(row_сount):
+            if i != r:
+                lv = matrix[i][lead]
+                matrix[i] = [iv - lv * rv for rv, iv in zip(matrix[r], matrix[i])]
+        lead += 1
+    return matrix
 
 
-def check(matrix):
-    pass
+def sum_of_row(row):
+    a = row[:(len(row)-1)]
+    return sum(a)
 
 
-def add_vector(vector):
-    pass
+def is_consistent(matrix):
+    is_сonsistent = True
+    for i in matrix:
+        if sum_of_row(i) == 0 and i[-1] != 0:
+            is_сonsistent = False
+    return is_сonsistent
+
+
+def add_vector(matrix, vector):
+    if number_of_rows(matrix) == number_of_rows(vector):
+        for i in range(len(vector)):
+            matrix[i].append(vector[i])
+        return matrix
+    else:
+        return "Wrong vector"
